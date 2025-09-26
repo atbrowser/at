@@ -1,4 +1,4 @@
-const { app, ipcMain, safeStorage } = require('electron');
+/*const { app, ipcMain, safeStorage } = require('electron');
 
 const PouchDB = require('pouchdb');
 
@@ -8,4 +8,4 @@ if (safeStorage.isEncryptionAvailable()) {
     
   } else {
     throw new Error('Encryption is not available on this system.');
-  }
+  }*/
