@@ -26,7 +26,7 @@ const createWindow = () => {
         webSecurity: false,
         vibrancy: 'popover',
         visualEffectState: 'followWindow',
-        backgroundColor: '#00000000'
+        backgroundColor: '#00000000',
     });
 
     window.loadFile(path.join(__dirname, '../render_processes/window.html'));

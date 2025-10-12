@@ -3,3 +3,5 @@
 .DS_Store
 out/
 /src/dbs
+/src/oldscripts
+/src/oldmainscripts
