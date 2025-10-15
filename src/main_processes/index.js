@@ -1,8 +1,8 @@
 const { app, screen, ipcMain, BrowserWindow, globalShortcut } = require('electron');
 const path = require('path');
-const myAddon = require('../../my-native-addon/')
+const myAddon = require('../../swift')
 
-console.log(myAddon.helloWorld('Electron'))
+myAddon.helloGui()
 
 const mainWindow = require(path.join(__dirname, './mainWindow.js'));
 const webviewCommunicator = require(path.join(__dirname, './webviewCommunicator.js'));

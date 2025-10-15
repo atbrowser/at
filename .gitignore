@@ -6,3 +6,4 @@ out/
 /src/oldscripts
 /src/oldmainscripts
 /my-native-addon/node_modules
+/swift/node_modules

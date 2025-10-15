@@ -1,4 +1,5 @@
 const { app, ipcMain, BrowserWindow } = require('electron');
+const myAddon = require('../../swift')
 
 app.on("ready", () => {
     ipcMain.on('swipe-coordinates', (event, arg) => {
@@ -7,5 +8,9 @@ app.on("ready", () => {
         if (focusedWindow) {
             focusedWindow.webContents.send('swipe-coordinates', arg);
         }
+    })
+    ipcMain.on('trigger-haptic-feedback', (event, arg) => {
+        console.log(`Trigger haptic feedback: ${arg}`);
+        myAddon.triggerHapticFeedback(arg)
     })
 });
