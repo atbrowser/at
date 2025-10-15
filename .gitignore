@@ -5,3 +5,4 @@ out/
 /src/dbs
 /src/oldscripts
 /src/oldmainscripts
+/my-native-addon/node_modules
