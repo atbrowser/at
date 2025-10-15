@@ -7,9 +7,6 @@
 + (NSString*)helloWorld:(NSString*)input;
 + (void)helloGui;
 + (void)triggerHapticFeedback:(NSInteger)pattern;
-+ (void)setTodoAddedCallback:(void(^)(NSString* todoJson))callback;
-+ (void)setTodoUpdatedCallback:(void(^)(NSString* todoJson))callback;
-+ (void)setTodoDeletedCallback:(void(^)(NSString* todoId))callback;
 @end
 
 #endif

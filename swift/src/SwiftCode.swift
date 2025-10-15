@@ -4,10 +4,6 @@ import SwiftUI
 @objc
 public class SwiftCode: NSObject {
     private static var windowController: NSWindowController?
-    private static var todoAddedCallback: ((String) -> Void)?
-    private static var todoUpdatedCallback: ((String) -> Void)?
-    private static var todoDeletedCallback: ((String) -> Void)?
-
     @objc
     public static func helloWorld(_ input: String) -> String {
         return "Hello from Swift! You said: \(input)"
@@ -29,22 +25,6 @@ public class SwiftCode: NSObject {
         }
     }
     
-
-    @objc
-    public static func setTodoAddedCallback(_ callback: @escaping (String) -> Void) {
-        todoAddedCallback = callback
-    }
-
-    @objc
-    public static func setTodoUpdatedCallback(_ callback: @escaping (String) -> Void) {
-        todoUpdatedCallback = callback
-    }
-
-    @objc
-    public static func setTodoDeletedCallback(_ callback: @escaping (String) -> Void) {
-        todoDeletedCallback = callback
-    }
-
     private static func encodeToJson<T: Encodable>(_ item: T) -> String? {
         let encoder = JSONEncoder()
 
@@ -65,19 +45,7 @@ public class SwiftCode: NSObject {
     @objc
     public static func helloGui() -> Void {
         let contentView = NSHostingView(rootView: ContentView(
-            onTodoAdded: { todo in
-                if let jsonString = encodeToJson(todo) {
-                    todoAddedCallback?(jsonString)
-                }
-            },
-            onTodoUpdated: { todo in
-                if let jsonString = encodeToJson(todo) {
-                    todoUpdatedCallback?(jsonString)
-                }
-            },
-            onTodoDeleted: { todoId in
-                todoDeletedCallback?(todoId.uuidString)
-            }
+
         ))
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 500, height: 500),
@@ -86,7 +54,7 @@ public class SwiftCode: NSObject {
             defer: false
         )
 
-        window.title = "Todo List"
+        window.title = "haptics"
         window.contentView = contentView
         window.center()
 
@@ -109,35 +77,9 @@ public class SwiftCode: NSObject {
     }
 
     private struct ContentView: View {
-        @State private var todos: [TodoItem] = []
-        @State private var newTodo: String = ""
-        @State private var newTodoDate: Date = Date()
-        @State private var editingTodo: UUID?
-        @State private var editedText: String = ""
-        @State private var editedDate: Date = Date()
-
-        let onTodoAdded: (TodoItem) -> Void
-        let onTodoUpdated: (TodoItem) -> Void
-        let onTodoDeleted: (UUID) -> Void
-
         private func playHaptic(_ pattern: Int = 0) {
             SwiftCode.triggerHapticFeedback(pattern)
         }
-
-        private func todoTextField(_ text: Binding<String>, placeholder: String, maxWidth: CGFloat? = nil) -> some View {
-            TextField(placeholder, text: text)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .frame(maxWidth: maxWidth ?? .infinity)
-        }
-
-        private func todoDatePicker(_ date: Binding<Date>) -> some View {
-            DatePicker("Due date", selection: date, displayedComponents: [.date])
-                .datePickerStyle(CompactDatePickerStyle())
-                .labelsHidden()
-                .frame(width: 100)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-        }
-
         var body: some View {
             VStack(spacing: 16) {
                 Text("Todo List")

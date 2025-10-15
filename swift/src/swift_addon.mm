@@ -85,10 +85,6 @@ public:
                 }
             };
         };
-
-        [SwiftBridge setTodoAddedCallback:makeCallback("todoAdded")];
-        [SwiftBridge setTodoUpdatedCallback:makeCallback("todoUpdated")];
-        [SwiftBridge setTodoDeletedCallback:makeCallback("todoDeleted")];
     }
 
     ~SwiftAddon() {

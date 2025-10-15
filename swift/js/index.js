@@ -14,18 +14,6 @@ class SwiftAddon extends EventEmitter {
     this.addon.on('triggerHapticFeedback', (payload) => {
       this.emit('triggerHapticFeedback', this.parse(payload))
     })
-
-    this.addon.on('todoAdded', (payload) => {
-      this.emit('todoAdded', this.parse(payload))
-    })
-
-    this.addon.on('todoUpdated', (payload) => {
-      this.emit('todoUpdated', this.parse(payload))
-    })
-
-    this.addon.on('todoDeleted', (payload) => {
-      this.emit('todoDeleted', this.parse(payload))
-    })
   }
 
   helloWorld (input = '') {
