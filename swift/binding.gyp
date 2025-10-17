@@ -8,8 +8,7 @@
           {
             "sources": [
               "src/swift_addon.mm",
-              "src/SwiftBridge.m",
-              "src/main.swift"
+              "src/SwiftBridge.m"
             ],
             "include_dirs": [
               "<!@(node -p \"require('node-addon-api').include\")",
@@ -41,7 +40,6 @@
                 "-Wl,-rpath,/usr/lib/swift",
                 "-Wl,-rpath,@executable_path/../Frameworks",
                 "-framework", "Foundation",
-                "-framework", "Security",
                 "-lc++"
               ],
               "HEADER_SEARCH_PATHS": [
@@ -59,8 +57,7 @@
               {
                 "action_name": "build_swift",
                 "inputs": [
-                  "src/SwiftCode.swift",
-                  "Package.swift"
+                  "src/SwiftCode.swift"
                 ],
                 "outputs": [
                   "build_swift/libSwiftCode.a",
@@ -69,7 +66,7 @@
                 "action": [
                   "sh",
                   "-c",
-                  "cd <(module_root_dir) && swift build -c release && mkdir -p build_swift && cp .build/release/libSwiftCode.a build_swift/ && cp .build/arm64-apple-macosx/release/SwiftCode.build/include/SwiftCode-Swift.h build_swift/swift_addon-Swift.h"
+                  "cd <(module_root_dir) && mkdir -p build_swift && swiftc -c src/SwiftCode.swift -emit-objc-header-path build_swift/swift_addon-Swift.h -module-name swift_addon -import-objc-header include/SwiftBridge.h -o build_swift/SwiftCode.o -static && ar rcs build_swift/libSwiftCode.a build_swift/SwiftCode.o"
                 ]
               },
               {

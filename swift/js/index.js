@@ -28,61 +28,6 @@ class SwiftAddon extends EventEmitter {
     this.addon.triggerHapticFeedback(pattern)
   }
 
-  // CouchDB methods
-  initCouchDB (host, port, username, password) {
-    return this.addon.initCouchDB(host, port, username, password)
-  }
-
-  getAllDBs (callback) {
-    this.addon.getAllDBs((result, error) => {
-      if (error) {
-        callback(null, error)
-      } else {
-        callback(JSON.parse(result), null)
-      }
-    })
-  }
-
-  createDB (dbName, callback) {
-    this.addon.createDB(dbName, (result, error) => {
-      if (error) {
-        callback(null, error)
-      } else {
-        callback(JSON.parse(result), null)
-      }
-    })
-  }
-
-  deleteDB (dbName, callback) {
-    this.addon.deleteDB(dbName, (result, error) => {
-      if (error) {
-        callback(null, error)
-      } else {
-        callback(JSON.parse(result), null)
-      }
-    })
-  }
-
-  insertDocument (dbName, documentJson, callback) {
-    this.addon.insertDocument(dbName, documentJson, (result, error) => {
-      if (error) {
-        callback(null, error)
-      } else {
-        callback(JSON.parse(result), null)
-      }
-    })
-  }
-
-  getDocument (dbName, docId, callback) {
-    this.addon.getDocument(dbName, docId, (result, error) => {
-      if (error) {
-        callback(null, error)
-      } else {
-        callback(JSON.parse(result), null)
-      }
-    })
-  }
-
   parse (payload) {
     const parsed = JSON.parse(payload)
 

@@ -27,13 +27,13 @@
 }
 
 #command-input {
-    width: calc(100% - 16px);
     height: 36px;
     border: none;
     font-family: monospace;
     background: transparent;
     -webkit-app-region: no-drag;
     &:focus {
+        width: calc(100% - 16px);
         outline: none;
     }
 }
