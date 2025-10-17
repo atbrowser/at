@@ -1,12 +1,165 @@
 import Foundation
 import SwiftUI
+import CouchDBClient
+import AsyncHTTPClient
+import NIOFoundationCompat
+import NIOCore
+
+
+// Wrapper class to hold the actor
+private class CouchDBClientWrapper {
+    let client: CouchDBClient
+    
+    init(config: CouchDBClient.Config) {
+        self.client = CouchDBClient(config: config)
+    }
+}
 
 @objc
 public class SwiftCode: NSObject {
     private static var windowController: NSWindowController?
+    private static var clientWrapper: CouchDBClientWrapper?
+    
     @objc
     public static func helloWorld(_ input: String) -> String {
         return "Hello from Swift! You said: \(input)"
+    }
+    
+    @objc
+    public static func initCouchDB(host: String, port: Int, username: String, password: String) -> String {
+        // Initialize in a detached task to ensure proper Swift concurrency context
+        Task.detached {
+            let config = CouchDBClient.Config(
+                couchProtocol: .http,
+                couchHost: host,
+                couchPort: port,
+                userName: username,
+                userPassword: password,
+                requestsTimeout: 30
+            )
+            clientWrapper = CouchDBClientWrapper(config: config)
+        }
+        return "CouchDB client initialization started"
+    }
+    
+    @objc
+    public static func getAllDBs(_ callback: @escaping (String?, String?) -> Void) {
+        guard let wrapper = clientWrapper else {
+            callback(nil, "CouchDB client not initialized")
+            return
+        }
+        
+        Task {
+            do {
+                let dbs = try await wrapper.client.getAllDBs()
+                let jsonData = try JSONEncoder().encode(dbs)
+                if let jsonString = String(data: jsonData, encoding: .utf8) {
+                    callback(jsonString, nil)
+                } else {
+                    callback(nil, "Failed to encode response")
+                }
+            } catch {
+                callback(nil, error.localizedDescription)
+            }
+        }
+    }
+    
+    @objc
+    public static func createDB(dbName: String, callback: @escaping (String?, String?) -> Void) {
+        guard let wrapper = clientWrapper else {
+            callback(nil, "CouchDB client not initialized")
+            return
+        }
+        
+        Task {
+            do {
+                let response = try await wrapper.client.createDB(dbName)
+                let jsonData = try JSONEncoder().encode(response)
+                if let jsonString = String(data: jsonData, encoding: .utf8) {
+                    callback(jsonString, nil)
+                } else {
+                    callback(nil, "Failed to encode response")
+                }
+            } catch {
+                callback(nil, error.localizedDescription)
+            }
+        }
+    }
+    
+    @objc
+    public static func deleteDB(dbName: String, callback: @escaping (String?, String?) -> Void) {
+        guard let wrapper = clientWrapper else {
+            callback(nil, "CouchDB client not initialized")
+            return
+        }
+        
+        Task {
+            do {
+                let response = try await wrapper.client.deleteDB(dbName)
+                let jsonData = try JSONEncoder().encode(response)
+                if let jsonString = String(data: jsonData, encoding: .utf8) {
+                    callback(jsonString, nil)
+                } else {
+                    callback(nil, "Failed to encode response")
+                }
+            } catch {
+                callback(nil, error.localizedDescription)
+            }
+        }
+    }
+    
+    @objc
+    public static func insertDocument(dbName: String, documentJson: String, callback: @escaping (String?, String?) -> Void) {
+        guard let wrapper = clientWrapper else {
+            callback(nil, "CouchDB client not initialized")
+            return
+        }
+        
+        guard let documentData = documentJson.data(using: .utf8) else {
+            callback(nil, "Invalid JSON string")
+            return
+        }
+        
+        Task {
+            do {
+                let body: HTTPClientRequest.Body = .bytes(ByteBuffer(data: documentData))
+                let response = try await wrapper.client.insert(dbName: dbName, body: body)
+                let jsonData = try JSONEncoder().encode(response)
+                if let jsonString = String(data: jsonData, encoding: .utf8) {
+                    callback(jsonString, nil)
+                } else {
+                    callback(nil, "Failed to encode response")
+                }
+            } catch {
+                callback(nil, error.localizedDescription)
+            }
+        }
+    }
+    
+    @objc
+    public static func getDocument(dbName: String, docId: String, callback: @escaping (String?, String?) -> Void) {
+        guard let wrapper = clientWrapper else {
+            callback(nil, "CouchDB client not initialized")
+            return
+        }
+        
+        Task {
+            do {
+                let response = try await wrapper.client.get(fromDB: dbName, uri: docId)
+                let body = response.body
+                let expectedBytes = response.headers.first(name: "content-length").flatMap(Int.init) ?? 1024 * 1024 * 10
+                var bytes = try await body.collect(upTo: expectedBytes)
+                
+                if let data = bytes.readData(length: bytes.readableBytes),
+                   let jsonString = String(data: data, encoding: .utf8) {
+                    callback(jsonString, nil)
+                } else {
+                    callback(nil, "Failed to read response data")
+                }
+            } catch {
+                callback(nil, error.localizedDescription)
+            }
+        }
     }
     
     @objc
