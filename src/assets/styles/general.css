@@ -27,13 +27,13 @@
 }
 
 #command-input {
+    width: 300px;
     height: 36px;
     border: none;
     font-family: monospace;
     background: transparent;
     -webkit-app-region: no-drag;
     &:focus {
-        width: calc(100% - 16px);
         outline: none;
     }
 }
@@ -104,12 +104,12 @@
 }
 
 .nav-button:hover video{
-    opacity: 0.075;
+    opacity: 0.05;
     transition: 0.1s all;
 }
 
-.nav-button:active {
-    background-color: var(--active-background);
+.nav-button:active video{
+    opacity: 0.0375;
     transition: 0.05s all;
 }
 

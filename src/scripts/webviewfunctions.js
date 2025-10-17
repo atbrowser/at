@@ -1,12 +1,13 @@
-const webview = {
-    create: () => {
-        const webview = document.createElement('webview');
-        document.querySelector('.contentarea').appendChild(webview);
-        return webview;
+const wv = {
+    add: () => {
+        document.querySelector('.contentarea').innerHTML = '';
+        const wv = document.createElement('webview');
+        document.querySelector('.contentarea').appendChild(wv);
+        return wv;
     },
-    loadURL: (url) => {
+    url: (url) => {
         if (!document.querySelector('.contentarea webview')) {
-            webview.create();
+            wv.add();
         }
         document.querySelector('.contentarea webview').src = url;
     },

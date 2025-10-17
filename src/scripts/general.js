@@ -13,9 +13,40 @@ const nonJScommands = [
         }
     },
     {
-        command: 'swiftui',
+        command: 'dt',
+        function: () => {
+            ipcRenderer.send('devtools');
+        }
+    },
+    {
+        command: 'native',
         function: () => {
             ipcRenderer.send('swiftui');
+        }
+    },
+    {
+        command: 'help',
+        function: () => {
+            document.querySelector('.contentarea').innerHTML = `
+<pre>
+<code>
+    Non-JavaScript commands:
+        help - Show this page
+        devtools - Open the developer tools
+        dt - Open the developer tools
+        native - Open the native GUI
+</code>
+<code>
+    JavaScript commands:
+        wv -> webview selector
+        wv.add() -> Add a webview to the contentarea 
+        wv.url(url) -> Set the url of the webview (adds a webview too if none exists)
+        wv.reload() -> Reload the webview
+        wv.stop() -> Stop loading of the webview
+    The other JS scripts could be used here as well.
+</code>
+</pre>
+            `;
         }
     }
 ]
