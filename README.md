@@ -14,7 +14,7 @@ Then everytime you want to build the Swift part build it like:
 ```
 npm run build
 ```
-then go out to the upper directory then run the Electron app:
+then go out to the parent directory then run the Electron app:
 ```
 cd ../
 npm start
