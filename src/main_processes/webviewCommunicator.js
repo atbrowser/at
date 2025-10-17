@@ -13,4 +13,11 @@ app.on("ready", () => {
         console.log(`Trigger haptic feedback: ${arg}`);
         myAddon.triggerHapticFeedback(arg)
     })
+    ipcMain.on('devtools', (event, arg) => {
+        const focusedWindow = BrowserWindow.getFocusedWindow();
+        focusedWindow.webContents.openDevTools();
+    })
+    ipcMain.on('swiftui', (event, arg) => {
+        myAddon.helloGui();
+    })
 });

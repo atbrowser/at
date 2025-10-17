@@ -4,6 +4,7 @@ import SwiftUI
 @objc
 public class SwiftCode: NSObject {
     private static var windowController: NSWindowController?
+    
     @objc
     public static func helloWorld(_ input: String) -> String {
         return "Hello from Swift! You said: \(input)"

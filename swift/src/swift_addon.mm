@@ -72,19 +72,6 @@ public:
             Napi::Error::New(env_, "Failed to create threadsafe function").ThrowAsJavaScriptException();
             return;
         }
-
-        auto makeCallback = [this](const char* eventType) {
-            return ^(NSString* payload) {
-                if (tsfn_ != nullptr) {
-                    auto* data = new CallbackData{
-                        eventType,
-                        std::string([payload UTF8String]),
-                        this
-                    };
-                    napi_call_threadsafe_function(tsfn_, data, napi_tsfn_blocking);
-                }
-            };
-        };
     }
 
     ~SwiftAddon() {

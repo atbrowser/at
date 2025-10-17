@@ -16,5 +16,4 @@
     [SwiftCode triggerHapticFeedback:pattern];
 }
 
-
 @end
