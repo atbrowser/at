@@ -5,3 +5,10 @@ out/
 /src/dbs
 /src/oldscripts
 /src/oldmainscripts
+/my-native-addon/node_modules
+/swift/node_modules
+/swift/build
+/swift/.build
+/swift/src/couchdb-swift-2.3.2
+/swift/build_swift
+swift/Sources/SwiftCode/db/my.db
