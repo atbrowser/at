@@ -3,7 +3,11 @@ import SwiftUI
 
 @objc
 public class SwiftCode: NSObject {
+    @MainActor  // Fix concurrency issue
     private static var windowController: NSWindowController?
+
+    @MainActor
+    private static let dbManager: SQLManager? = try? SQLManager()
     
     @objc
     public static func helloWorld(_ input: String) -> String {
@@ -44,6 +48,7 @@ public class SwiftCode: NSObject {
     }
 
     @objc
+    @MainActor  // Fix concurrency issue
     public static func helloGui() -> Void {
         let contentView = NSHostingView(rootView: ContentView(
 
@@ -77,13 +82,13 @@ public class SwiftCode: NSObject {
         }
     }
 
-    private struct ContentView: View {
+    private struct ContentView: SwiftUI.View {
         private func playHaptic(_ pattern: Int = 0) {
             SwiftCode.triggerHapticFeedback(pattern)
         }
-        var body: some View {
+        var body: some SwiftUI.View {
             VStack(spacing: 16) {
-                Text("Todo List")
+                Text("Native GUI")
                 Button(action: {
                     playHaptic(0)
                 }) {
@@ -99,7 +104,7 @@ public class SwiftCode: NSObject {
                 }) {
                     Text("Play Haptic 2")
                 }
-            }
+            }.frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 }

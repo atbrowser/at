@@ -13,7 +13,9 @@
             "include_dirs": [
               "<!@(node -p \"require('node-addon-api').include\")",
               "include",
-              "build_swift"
+              "build_swift",
+              "Sources/SwiftCode",
+              ".build/arm64-apple-macosx/release/Modules"
             ],
             "dependencies": [
               "<!(node -p \"require('node-addon-api').gyp\")"
@@ -40,6 +42,7 @@
                 "-Wl,-rpath,/usr/lib/swift",
                 "-Wl,-rpath,@executable_path/../Frameworks",
                 "-framework", "Foundation",
+                "-lsqlite3",
                 "-lc++"
               ],
               "HEADER_SEARCH_PATHS": [
@@ -55,9 +58,25 @@
             },
             "actions": [
               {
+                "action_name": "build_swift_deps",
+                "inputs": [
+                  "Package.swift"
+                ],
+                "outputs": [
+                  ".build/arm64-apple-macosx/release/Modules/SQLite.swiftmodule"
+                ],
+                "action": [
+                  "sh",
+                  "-c",
+                  "cd <(module_root_dir) && swift build -c release"
+                ]
+              },
+              {
                 "action_name": "build_swift",
                 "inputs": [
-                  "src/SwiftCode.swift"
+                  "Sources/SwiftCode/SwiftCode.swift",
+                  "Sources/SwiftCode/db/SQLManager.swift",
+                  ".build/arm64-apple-macosx/release/Modules/SQLite.swiftmodule"
                 ],
                 "outputs": [
                   "build_swift/libSwiftCode.a",
@@ -66,7 +85,7 @@
                 "action": [
                   "sh",
                   "-c",
-                  "cd <(module_root_dir) && mkdir -p build_swift && swiftc -c src/SwiftCode.swift -emit-objc-header-path build_swift/swift_addon-Swift.h -module-name swift_addon -import-objc-header include/SwiftBridge.h -o build_swift/SwiftCode.o -static && ar rcs build_swift/libSwiftCode.a build_swift/SwiftCode.o"
+                  "cd <(module_root_dir) && mkdir -p build_swift && swiftc -emit-library -emit-objc-header -emit-objc-header-path build_swift/swift_addon-Swift.h -module-name swift_addon -import-objc-header include/SwiftBridge.h -static -o build_swift/libSwiftCode.a Sources/SwiftCode/SwiftCode.swift Sources/SwiftCode/db/SQLManager.swift -I .build/arm64-apple-macosx/release/Modules .build/arm64-apple-macosx/release/SQLite.build/*.o -target arm64-apple-macosx11.0 -sdk `xcrun --show-sdk-path`"
                 ]
               },
               {

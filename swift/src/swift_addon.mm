@@ -9,7 +9,7 @@ public:
             InstanceMethod("helloWorld", &SwiftAddon::HelloWorld),
             InstanceMethod("helloGui", &SwiftAddon::HelloGui),
             InstanceMethod("triggerHapticFeedback", &SwiftAddon::TriggerHapticFeedback),
-            InstanceMethod("on", &SwiftAddon::On)
+            InstanceMethod("on", &SwiftAddon::On),
         });
 
         Napi::FunctionReference* constructor = new Napi::FunctionReference();
@@ -129,6 +129,7 @@ private:
         callbacks.Value().Set(info[0].As<Napi::String>(), info[1].As<Napi::Function>());
         return env.Undefined();
     }
+
 };
 
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
