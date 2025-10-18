@@ -7,7 +7,7 @@ public:
     static Napi::Object Init(Napi::Env env, Napi::Object exports) {
         Napi::Function func = DefineClass(env, "SwiftAddon", {
             InstanceMethod("helloWorld", &SwiftAddon::HelloWorld),
-            InstanceMethod("helloGui", &SwiftAddon::HelloGui),
+            InstanceMethod("nativeGui", &SwiftAddon::nativeGui),
             InstanceMethod("triggerHapticFeedback", &SwiftAddon::TriggerHapticFeedback),
             InstanceMethod("on", &SwiftAddon::On),
         });
@@ -102,8 +102,8 @@ private:
         return Napi::String::New(env, [result UTF8String]);
     }
 
-    void HelloGui(const Napi::CallbackInfo& info) {
-        [SwiftBridge helloGui];
+    void nativeGui(const Napi::CallbackInfo& info) {
+        [SwiftBridge nativeGui];
     }
 
     void TriggerHapticFeedback(const Napi::CallbackInfo& info) {

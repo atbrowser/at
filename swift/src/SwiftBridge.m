@@ -8,8 +8,8 @@
     return [SwiftCode helloWorld:input];
 }
 
-+ (void)helloGui {
-    [SwiftCode helloGui];
++ (void)nativeGui {
+    [SwiftCode nativeGui];
 }
 
 + (void)triggerHapticFeedback:(NSInteger)pattern {

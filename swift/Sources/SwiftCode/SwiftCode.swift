@@ -49,7 +49,7 @@ public class SwiftCode: NSObject {
 
     @objc
     @MainActor  // Fix concurrency issue
-    public static func helloGui() -> Void {
+    public static func nativeGui() -> Void {
         let contentView = NSHostingView(rootView: ContentView(
 
         ))

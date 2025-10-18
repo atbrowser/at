@@ -307,7 +307,7 @@ SWIFT_CLASS("_TtC11swift_addon9SwiftCode")
 @interface SwiftCode : NSObject
 + (NSString * _Nonnull)helloWorld:(NSString * _Nonnull)input SWIFT_WARN_UNUSED_RESULT;
 + (void)triggerHapticFeedback:(NSInteger)pattern;
-+ (void)helloGui;
++ (void)nativeGui;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 

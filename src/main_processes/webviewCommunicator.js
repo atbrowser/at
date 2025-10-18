@@ -18,6 +18,6 @@ app.on("ready", () => {
         focusedWindow.webContents.openDevTools();
     })
     ipcMain.on('swiftui', (event, arg) => {
-        myAddon.helloGui();
+        myAddon.nativeGui();
     })
 });

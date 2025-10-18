@@ -5,7 +5,7 @@
 
 @interface SwiftBridge : NSObject
 + (NSString*)helloWorld:(NSString*)input;
-+ (void)helloGui;
++ (void)nativeGui;
 + (void)triggerHapticFeedback:(NSInteger)pattern;
 @end
 

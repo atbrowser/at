@@ -20,8 +20,8 @@ class SwiftAddon extends EventEmitter {
     return this.addon.helloWorld(input)
   }
 
-  helloGui () {
-    this.addon.helloGui()
+  nativeGui () {
+    this.addon.nativeGui()
   }
 
   triggerHapticFeedback (pattern) {
