@@ -1,12 +1,10 @@
-## at Swift support
-Working on Swift support for at, only works on macOS right now. Will work on Swift for Windows and Linux too.
+## @at
+A unique Electron-based development framework. Native parts are written in Swift. Supports macOS only (for now). 
+> NOTE: This project is being publicly built. It doesn't have any features to be a framework right now. But it'll be when it grows up.
 ### Setup
-Firstly:
+In order:
 ```
 npm i
-```
-secondly:
-```
 cd swift
 npm i
 ```
