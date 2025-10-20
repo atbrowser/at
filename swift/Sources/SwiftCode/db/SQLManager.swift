@@ -14,7 +14,7 @@ public class SQLManager {
     
     public init() throws {
         // Initialize database connection
-        db = try Connection("./my.db")
+        db = try Connection("./swift/Sources/SwiftCode/db/my.db")
         
         // Create table if it doesn't exist
         try createTable()

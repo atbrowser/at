@@ -83,6 +83,9 @@ public class SwiftCode: NSObject {
     }
 
     private struct ContentView: SwiftUI.View {
+        @State private var email = ""
+        @State private var name = ""
+        
         private func playHaptic(_ pattern: Int = 0) {
             SwiftCode.triggerHapticFeedback(pattern)
         }
@@ -104,7 +107,14 @@ public class SwiftCode: NSObject {
                 }) {
                     Text("Play Haptic 2")
                 }
-            }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                TextField("Email", text: $email)
+                TextField("Name", text: $name)
+                Button(action: {
+                    try? SwiftCode.dbManager?.insertUser(email: email, name: name)
+                }) {
+                    Text("Insert User")
+                }
+                }.frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
         }
-    }
 }
