@@ -1,7 +1,7 @@
 {
-  "name": "browser",
+  "name": "at",
   "version": "1.0.0",
-  "description": "An Electron based browser.",
+  "description": "Framework.",
   "main": "./src/main_processes/index.js",
   "scripts": {
     "start": "electron-forge start",
@@ -10,7 +10,7 @@
     "make": "electron-forge make"
   },
   "keywords": [
-    "browser"
+    "at"
   ],
   "author": "Yusuf Berk Çekiç",
   "license": "MIT",

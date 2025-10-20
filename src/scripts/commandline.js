@@ -12,6 +12,7 @@ const helpText = `
         devtools - Open the developer tools
         dt - Open the developer tools
         native - Open the native GUI
+        clear - Clear the contentarea
 </code>
 <code>
     JavaScript commands:
@@ -49,8 +50,12 @@ const nonJScommands = [
         function: () => {
             document.querySelector('.contentarea').innerHTML = helpText;
         }
+    },{
+    command: 'clear',
+    function: () => {
+        document.querySelector('.contentarea').innerHTML = '';
     }
-]
+}]
 
 // Get all available commands for autocomplete
 const allCommands = nonJScommands.map(cmd => cmd.command);
