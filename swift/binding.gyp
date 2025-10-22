@@ -75,6 +75,7 @@
                 "action_name": "build_swift",
                 "inputs": [
                   "Sources/SwiftCode/SwiftCode.swift",
+                  "Sources/SwiftCode/db/DBConnection.swift",
                   "Sources/SwiftCode/db/SQLManager.swift",
                   ".build/arm64-apple-macosx/release/Modules/SQLite.swiftmodule"
                 ],
@@ -85,7 +86,7 @@
                 "action": [
                   "sh",
                   "-c",
-                  "cd <(module_root_dir) && mkdir -p build_swift && swiftc -emit-library -emit-objc-header -emit-objc-header-path build_swift/swift_addon-Swift.h -module-name swift_addon -import-objc-header include/SwiftBridge.h -static -o build_swift/libSwiftCode.a Sources/SwiftCode/SwiftCode.swift Sources/SwiftCode/db/SQLManager.swift -I .build/arm64-apple-macosx/release/Modules .build/arm64-apple-macosx/release/SQLite.build/*.o -target arm64-apple-macosx11.0 -sdk `xcrun --show-sdk-path`"
+                  "cd <(module_root_dir) && mkdir -p build_swift && swiftc -emit-library -emit-objc-header -emit-objc-header-path build_swift/swift_addon-Swift.h -module-name swift_addon -import-objc-header include/SwiftBridge.h -static -o build_swift/libSwiftCode.a Sources/SwiftCode/SwiftCode.swift Sources/SwiftCode/db/DBConnection.swift Sources/SwiftCode/db/SQLManager.swift -I .build/arm64-apple-macosx/release/Modules .build/arm64-apple-macosx/release/SQLite.build/*.o -target arm64-apple-macosx11.0 -sdk `xcrun --show-sdk-path`"
                 ]
               },
               {

@@ -60,7 +60,7 @@ public class SwiftCode: NSObject {
             defer: false
         )
 
-        window.title = "haptics"
+        window.title = "native gui"
         window.contentView = contentView
         window.center()
 
@@ -70,28 +70,26 @@ public class SwiftCode: NSObject {
         NSApp.activate(ignoringOtherApps: true)
     }
 
-    private struct TodoItem: Identifiable, Codable {
-        let id: UUID
-        var text: String
-        var date: Date
-
-        init(id: UUID = UUID(), text: String, date: Date) {
-            self.id = id
-            self.text = text
-            self.date = date
-        }
-    }
-
     private struct ContentView: SwiftUI.View {
         @State private var email = ""
         @State private var name = ""
-        
+        @State private var users: [[String: Any?]] = []
+
+        init() {
+            do {
+                _users = State(initialValue: try SwiftCode.dbManager?.getAllUsers() ?? [])
+                print("Users: \(users)")
+            } catch {
+                print("Error getting users: \(error)")
+            }
+        }
         private func playHaptic(_ pattern: Int = 0) {
             SwiftCode.triggerHapticFeedback(pattern)
         }
         var body: some SwiftUI.View {
             VStack(spacing: 16) {
                 Text("Native GUI")
+                HStack {
                 Button(action: {
                     playHaptic(0)
                 }) {
@@ -107,12 +105,27 @@ public class SwiftCode: NSObject {
                 }) {
                     Text("Play Haptic 2")
                 }
+                }.padding()
+                HStack {
                 TextField("Email", text: $email)
                 TextField("Name", text: $name)
-                Button(action: {
-                    try? SwiftCode.dbManager?.insertUser(email: email, name: name)
-                }) {
-                    Text("Insert User")
+                    Button(action: {
+                        try? SwiftCode.dbManager?.insertUser(email: email, name: name)
+                        do {
+                            users = try SwiftCode.dbManager?.getAllUsers() ?? []
+                        } catch {
+                            print("Error reloading users: \(error)")
+                        }
+                    }) {
+                        Text("Insert User")
+                    }
+                }.padding()
+                List(users.indices, id: \.self) { index in
+                    let user = users[index]
+                    HStack {
+                    Text("\(user["email"] as? String ?? "")").foregroundColor(Color.gray)
+                    Text("\(user["name"] as? String ?? "")")
+                    }
                 }
                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
             }
